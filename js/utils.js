@@ -7,6 +7,21 @@ export async function hashPassword(text) {
     .join("");
 }
 
+// imgbb(무료, 카드 필요 없음)에 이미지를 업로드하고 공개 URL을 돌려줍니다.
+export async function uploadImageToImgbb(file, apiKey) {
+  const formData = new FormData();
+  formData.append("image", file);
+  const res = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+    method: "POST",
+    body: formData,
+  });
+  const json = await res.json();
+  if (!json.success) {
+    throw new Error(json.error?.message || "이미지 업로드에 실패했어요.");
+  }
+  return json.data.url;
+}
+
 // Firestore 문서 id로부터 사람이 읽기 좋은 견본 코드를 만듭니다. 예: FH-3F9A
 export function swatchCode(id) {
   return "FH-" + id.slice(0, 4).toUpperCase();

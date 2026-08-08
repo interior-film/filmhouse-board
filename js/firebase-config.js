@@ -25,7 +25,10 @@ export const WORK_AREAS = [
   "몰딩", "걸레받이", "문/문틀", "가구/붙박이장", "싱크대", "샤시/창틀", "기타",
 ];
 
-// 사진 업로드 기능 스위치입니다.
-// Firebase Storage를 아직 안 켰다면 false로 두세요 (사진 없이 글만 등록/수정 가능).
-// 나중에 Storage를 켜고 나면 true로 바꾸면 사진 업로드가 바로 활성화돼요.
-export const PHOTOS_ENABLED = false;
+// 사진 업로드는 imgbb(무료, 카드 필요 없음)를 사용합니다.
+// 아래 IMGBB_API_KEY에 본인 키를 넣으면 사진 업로드가 자동으로 켜져요.
+// 키 발급 방법: https://api.imgbb.com/ 접속 → 무료 가입(이메일만) → "Get API key"
+export const IMGBB_API_KEY = "YOUR_IMGBB_API_KEY";
+
+// 사진 업로드 기능 스위치입니다. IMGBB_API_KEY를 실제 값으로 채우면 자동으로 true가 돼요.
+export const PHOTOS_ENABLED = IMGBB_API_KEY !== "YOUR_IMGBB_API_KEY";

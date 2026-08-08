@@ -1,14 +1,12 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, doc, getDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { firebaseConfig, WORK_AREAS, PHOTOS_ENABLED } from "./firebase-config.js";
-import { hashPassword, swatchCode, formatDate, statusLabel, statusClass, escapeHtml } from "./utils.js";
+import { firebaseConfig, WORK_AREAS, PHOTOS_ENABLED, IMGBB_API_KEY } from "./firebase-config.js";
+import { hashPassword, swatchCode, formatDate, statusLabel, statusClass, escapeHtml, uploadImageToImgbb } from "./utils.js";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
-const storage = getStorage(app);
 
 const content = document.getElementById("content");
 const params = new URLSearchParams(location.search);
@@ -207,7 +205,7 @@ function renderEditForm() {
   if (PHOTOS_ENABLED) {
     dropEl.addEventListener("click", () => inputEl.click());
     inputEl.addEventListener("change", () => {
-      const room = 6 - keptImages.length - newFiles.length;
+      const room = 10 - keptImages.length - newFiles.length;
       newFiles.push(...Array.from(inputEl.files).slice(0, Math.max(room, 0)));
       inputEl.value = "";
       renderEditPreview();
@@ -255,10 +253,8 @@ async function saveEdit(e) {
   try {
     const uploaded = [];
     for (const file of newFiles) {
-      const path = `posts/${Date.now()}_${Math.random().toString(36).slice(2)}_${file.name}`;
-      const fileRef = ref(storage, path);
-      await uploadBytes(fileRef, file);
-      uploaded.push(await getDownloadURL(fileRef));
+      const url = await uploadImageToImgbb(file, IMGBB_API_KEY);
+      uploaded.push(url);
     }
 
     const workAreas = Array.from(document.getElementById("editWorkAreas").querySelectorAll("input:checked")).map((i) => i.value);

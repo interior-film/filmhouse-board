@@ -28,15 +28,15 @@
 2. 위치는 `asia-northeast3 (서울)` 선택
 3. 보안 규칙은 일단 "테스트 모드"로 시작 → 아래 3번 항목의 규칙으로 나중에 교체
 
-### 1-3. Storage 켜기 (사진 저장소) — 나중에 해도 됨
-사진 업로드 기능은 **Firebase Storage를 쓰려면 유료(Blaze) 요금제로 업그레이드해야** 해요 (사용량이 적으면 실제로는 계속 $0일 가능성이 높지만, 카드 등록 자체는 필요해요).
+### 1-3. 사진 업로드 켜기 — imgbb (무료, 카드 필요 없음)
+사진 저장은 Firebase Storage 대신 **imgbb**라는 무료 이미지 호스팅 서비스를 사용해요. 이메일 가입만 하면 되고 신용카드는 전혀 필요 없어요.
 
-지금 당장 카드를 등록하고 싶지 않다면 이 단계는 건너뛰어도 됩니다. `js/firebase-config.js`의 `PHOTOS_ENABLED`가 `false`로 되어 있으면, 사진 없이 텍스트 문의만으로 게시판이 정상 작동해요. 나중에 사진 기능을 켜고 싶어지면 아래 순서만 하면 돼요:
+1. https://api.imgbb.com/ 접속
+2. 계정이 없으면 이메일로 무료 가입 (또는 구글/소셜 로그인)
+3. 로그인 후 "Get API key" 버튼을 누르면 API 키가 나와요. 복사하세요.
+4. `js/firebase-config.js` 파일의 `IMGBB_API_KEY` 값에 그대로 붙여넣기
 
-1. 왼쪽 메뉴 **빌드 → Storage → 시작하기** → 프로젝트 업그레이드(카드 등록) → 위치는 Firestore와 동일하게 서울로 → 생성
-2. 아래 "Storage 규칙" 붙여넣기 (2번 항목 참고)
-3. `js/firebase-config.js`에서 `PHOTOS_ENABLED`를 `true`로 변경
-4. GitHub에 이미 올려둔 파일이라면, 이 두 파일(`js/firebase-config.js`)만 다시 업로드(덮어쓰기)하면 끝이에요.
+이 값을 채워 넣는 순간 `PHOTOS_ENABLED`가 자동으로 켜져서 사진 업로드가 바로 활성화돼요. 지금 당장 안 하셔도 괜찮고, 텍스트 문의만으로도 게시판은 정상 작동해요.
 
 ### 1-4. Authentication 켜기 (관리자 로그인용)
 1. 왼쪽 메뉴 **빌드 → Authentication → 시작하기**
@@ -80,23 +80,9 @@ service cloud.firestore {
 }
 ```
 
-### Storage 규칙
-Storage → Rules 탭에서 아래로 교체:
-
-```
-rules_version = '2';
-service firebase.storage {
-  match /b/{bucket}/o {
-    match /posts/{allPaths=**} {
-      allow read: if true;
-      allow write: if request.resource.size < 8 * 1024 * 1024
-                   && request.resource.contentType.matches('image/.*');
-    }
-  }
-}
-```
-
-> 참고: 비공개 글은 화면(프론트엔드)에서 비밀번호를 입력해야 내용이 보이고, 수정/삭제도 비밀번호가 맞아야 되도록 막아뒀어요. 다만 이건 개발자 도구로 데이터를 직접 들여다보면 우회가 아예 불가능한 수준의 보안은 아니에요(비밀번호는 해시로 저장되지만, 문서 자체는 공개 읽기 대상이라 해시값도 함께 노출돼요). 소규모 문의 게시판 수준에서는 충분하지만, 나중에 더 강한 보안이 필요해지면 Cloud Functions를 추가하는 방법을 알려드릴 수 있어요.
+> 참고: 사진은 Firebase가 아니라 imgbb에 저장되므로 Storage 규칙은 따로 필요 없어요.
+>
+> 참고2: 비공개 글은 화면(프론트엔드)에서 비밀번호를 입력해야 내용이 보이고, 수정/삭제도 비밀번호가 맞아야 되도록 막아뒀어요. 다만 이건 개발자 도구로 데이터를 직접 들여다보면 우회가 아예 불가능한 수준의 보안은 아니에요(비밀번호는 해시로 저장되지만, 문서 자체는 공개 읽기 대상이라 해시값도 함께 노출돼요). 소규모 문의 게시판 수준에서는 충분하지만, 나중에 더 강한 보안이 필요해지면 Cloud Functions를 추가하는 방법을 알려드릴 수 있어요.
 
 ---
 

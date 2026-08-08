@@ -1,12 +1,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-import { firebaseConfig, WORK_AREAS, PHOTOS_ENABLED } from "./firebase-config.js";
-import { hashPassword } from "./utils.js";
+import { firebaseConfig, WORK_AREAS, PHOTOS_ENABLED, IMGBB_API_KEY } from "./firebase-config.js";
+import { hashPassword, uploadImageToImgbb } from "./utils.js";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const storage = getStorage(app);
 
 // 시공 부위 chip 렌더링
 const workAreasEl = document.getElementById("workAreas");
@@ -29,7 +27,7 @@ let selectedFiles = [];
 if (PHOTOS_ENABLED) {
   photoDrop.addEventListener("click", () => photoInput.click());
   photoInput.addEventListener("change", () => {
-    const files = Array.from(photoInput.files).slice(0, 6);
+    const files = Array.from(photoInput.files).slice(0, 10);
     selectedFiles = files;
     photoPreview.innerHTML = "";
     files.forEach((file) => {
@@ -78,13 +76,10 @@ form.addEventListener("submit", async (e) => {
   try {
     const passwordHash = await hashPassword(password);
 
-    // 이미지 업로드
+    // 이미지 업로드 (imgbb)
     const imageUrls = [];
     for (const file of selectedFiles) {
-      const path = `posts/${Date.now()}_${Math.random().toString(36).slice(2)}_${file.name}`;
-      const fileRef = ref(storage, path);
-      await uploadBytes(fileRef, file);
-      const url = await getDownloadURL(fileRef);
+      const url = await uploadImageToImgbb(file, IMGBB_API_KEY);
       imageUrls.push(url);
     }
 
@@ -108,7 +103,7 @@ form.addEventListener("submit", async (e) => {
     window.location.href = "index.html";
   } catch (err) {
     console.error(err);
-    showError("등록 중 오류가 발생했어요. firebase-config.js 설정을 확인하거나 잠시 후 다시 시도해주세요.");
+    showError("등록 중 오류가 발생했어요. firebase-config.js의 IMGBB_API_KEY 설정을 확인하거나 잠시 후 다시 시도해주세요.");
     submitBtn.disabled = false;
     submitBtn.textContent = "문의 등록하기";
   }
