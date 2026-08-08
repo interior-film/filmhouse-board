@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>견적 문의 작성 | 필름하우스</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="roll-header">
+      <div class="brand">
+        <div class="roll-mark"></div>
+        <div><h1>필름하우스</h1><div class="tag mono">새 견적 문의</div></div>
+      </div>
+      <div class="nav-actions"><a class="btn" href="index.html">← 목록으로</a></div>
+    </header>
+
+    <form class="panel" id="writeForm">
+      <div class="row2">
+        <div class="field">
+          <label>이름 (닉네임 가능)</label>
+          <input type="text" id="authorName" required maxlength="20" placeholder="예: 일산이철수" />
+        </div>
+        <div class="field">
+          <label>비밀번호</label>
+          <input type="password" id="password" required maxlength="20" placeholder="내 글을 확인할 때 사용" />
+          <div class="hint">전화번호 대신 사용하는 확인용 비밀번호예요. 잊지 마세요!</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>이메일 (선택)</label>
+        <input type="email" id="email" placeholder="견적 완료 알림을 받고 싶다면 입력하세요" />
+      </div>
+
+      <div class="field">
+        <label>제목</label>
+        <input type="text" id="title" required maxlength="60" placeholder="예: 거실 몰딩+걸레받이 필름 시공 문의" />
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label>지역</label>
+          <input type="text" id="region" placeholder="예: 고양 일산" />
+        </div>
+        <div class="field">
+          <label>평수</label>
+          <input type="text" id="pyeong" placeholder="예: 32평" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>시공 부위 (중복 선택 가능)</label>
+        <div class="chip-group" id="workAreas"></div>
+      </div>
+
+      <div class="field">
+        <label>상세 요청사항</label>
+        <textarea id="description" required placeholder="현재 상태, 원하는 필름 색상/재질, 일정 등을 자유롭게 적어주세요."></textarea>
+      </div>
+
+      <div class="field">
+        <label>사진 (최대 6장)</label>
+        <input type="file" id="photoInput" accept="image/*" multiple hidden />
+        <div class="photo-drop" id="photoDrop">클릭해서 사진 선택 (jpg/png, 장당 8MB 이하)</div>
+        <div class="photo-preview" id="photoPreview"></div>
+      </div>
+
+      <div class="field">
+        <label>공개 범위</label>
+        <div class="radio-toggle">
+          <label><input type="radio" name="visibility" value="public" checked /><span>게시판에 공개 — 사진과 시공부위가 다른 방문자에게도 보여요</span></label>
+          <label><input type="radio" name="visibility" value="private" /><span>비공개 — 제목만 목록에 보이고, 내용은 비밀번호를 입력해야 확인 가능해요</span></label>
+        </div>
+      </div>
+
+      <div id="formError" class="error-text" style="display:none"></div>
+
+      <div class="form-footer">
+        <a class="btn" href="index.html">취소</a>
+        <button type="submit" class="btn primary" id="submitBtn">문의 등록하기</button>
+      </div>
+    </form>
+  </div>
+
+  <script type="module" src="js/write.js"></script>
+</body>
+</html>

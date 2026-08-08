@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>필름하우스 | 시공 문의 게시판</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="roll-header">
+      <div class="brand">
+        <div class="roll-mark"></div>
+        <div>
+          <h1>필름하우스</h1>
+          <div class="tag mono">INTERIOR FILM QUOTE BOARD</div>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <a class="btn" href="admin.html">관리자</a>
+        <a class="btn primary" href="write.html">+ 견적 문의하기</a>
+      </div>
+    </header>
+
+    <div class="board-toolbar">
+      <div class="count-note" id="countNote">불러오는 중…</div>
+    </div>
+
+    <div id="grid" class="card-grid"></div>
+    <div id="emptyState" class="empty-state" style="display:none">
+      아직 등록된 문의가 없어요.<br/>
+      사진과 시공 부위를 올려주시면 빠르게 견적을 확인해드릴게요.
+    </div>
+
+    <footer class="site-foot">사진과 상세 내용만으로 견적을 받아보세요 · 전화번호 없이도 문의 가능합니다</footer>
+  </div>
+
+  <script type="module" src="js/list.js"></script>
+</body>
+</html>
