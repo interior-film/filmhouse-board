@@ -28,7 +28,7 @@ export const WORK_AREAS = [
 // 사진 업로드는 imgbb(무료, 카드 필요 없음)를 사용합니다.
 // 아래 IMGBB_API_KEY에 본인 키를 넣으면 사진 업로드가 자동으로 켜져요.
 // 키 발급 방법: https://api.imgbb.com/ 접속 → 무료 가입(이메일만) → "Get API key"
-export const IMGBB_API_KEY = "YOUR_IMGBB_API_KEY";
+export const IMGBB_API_KEY = "4215f38300a3f4c736f61f4ca8476208";
 
 // 사진 업로드 기능 스위치입니다. IMGBB_API_KEY를 실제 값으로 채우면 자동으로 true가 돼요.
 export const PHOTOS_ENABLED = IMGBB_API_KEY !== "YOUR_IMGBB_API_KEY";
