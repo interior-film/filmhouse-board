@@ -11,13 +11,18 @@ export const firebaseConfig = {
   measurementId: "G-CH8RXJ7MTN",
 };
 
-// 견적 완료 시 이메일 알림을 보내고 싶다면 EmailJS(무료)를 사용합니다.
-// 사용하지 않으려면 useEmailNotification 을 false로 두세요.
+// 이메일 알림 (EmailJS, 무료) — 두 방향으로 쓸 수 있어요.
+// 1) useEmailNotification: 준님이 견적을 완료 처리하면 → 고객에게 알림
+// 2) notifyAdminOnNewPost: 고객이 새 문의를 등록하면 → 준님(관리자)에게 알림
+// 둘 다 안 쓰려면 각각 false로 두세요.
 export const EMAILJS_CONFIG = {
   useEmailNotification: false,
-  publicKey: "YOUR_EMAILJS_PUBLIC_KEY",
-  serviceId: "YOUR_EMAILJS_SERVICE_ID",
+  notifyAdminOnNewPost: true,
+  adminEmail: "kangjune07@gmail.com",
+  publicKey: "jMXIcz_k8i2_E4EKu",
+  serviceId: "service_g0lfqyr",
   templateId: "YOUR_EMAILJS_TEMPLATE_ID",
+  newInquiryTemplateId: "template_5p8t1cc",
 };
 
 // 시공 부위 선택지 - 필요하면 자유롭게 수정하세요.
